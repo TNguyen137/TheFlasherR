@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, PermissionAndroid, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Platform, PermissionsAndroid, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MapView, {Marker, AnimatedRegion, Polyline, PROVIDER_GOOGLE} from 'react-native-maps';
 import haversine from 'haversine';
 
@@ -89,8 +89,8 @@ class AnimatedMarkers extends React.Component {
   getMapRegion = () => ({
     latitude: this.state.latitude,
     longitude: this.state.longitude,
-    latitudeDelta: this.state.latitudeDelta,
-    longitudeDelta: this.state.longitudeDelta
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA
   });
 
   calcDistance = newLatLng => {
@@ -100,7 +100,7 @@ class AnimatedMarkers extends React.Component {
 
   requestCameraPermission = async () => {
     try {
-      const granted = await PermissionAndroid.request(
+      const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
         {
           title: "Location Access Permission",
@@ -109,7 +109,7 @@ class AnimatedMarkers extends React.Component {
           buttonPositive: "OK"
         }
       );
-      if (granted === PermissionsAndroid.RESULT.GRANTED) {
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the camera");
       } else {
         console.log("Camera Permission Denied");
